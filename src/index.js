@@ -17,7 +17,22 @@ server.get("/movies", (req, res) =>{
   const response ={
     success: true,
     movies,
-  };
-  
+    
+  }
+  console.log(req.query);
+  const genderFilterParam = response.movies.filter((movies)=>movies.gender === req.query.gender);
+ /* const nameFilterParam = response.movies.sort((movies)=>movies.title === req.query.title);*/
   res.json(response);
 })
+/*server.post("/movies/gender", (req, res) =>{
+const genderFilterParam = response.movies.filter((movies)=>movies.gender === req.query.gender);
+  const response ={
+    success: true,
+    movies,
+    
+  }
+  console.log(req.query);
+  
+ 
+  res.json(response);
+})*/
