@@ -11,10 +11,10 @@ const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
-
+//servidor estático películas
 const staticServerPathMovies = "./src/public-react"; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathMovies));
-
+//servidor estático imágenes
 
 server.get("/movies", (req, res) =>{
 
@@ -29,15 +29,4 @@ server.get("/movies", (req, res) =>{
   res.json(response);
   res.json()
 })
-/*server.post("/movies/gender", (req, res) =>{
-const genderFilterParam = response.movies.filter((movies)=>movies.gender === req.query.gender);
-  const response ={
-    success: true,
-    movies,
-    
-  }
-  console.log(req.query);
-  
- 
-  res.json(response);
-})*/
+
