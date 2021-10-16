@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const movies= require('./data/movies.json');
+const movies = require('./data/movies.json');
 // create and config server
 const server = express();
 server.use(cors());
@@ -12,21 +12,24 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 //servidor estático películas
-const staticServerPathMovies = "./src/public-react"; // En esta carpeta ponemos los ficheros estáticos
+const staticServerPathMovies = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathMovies));
 //servidor estático imágenes
 
-server.get("/movies", (req, res) =>{
-
-  const response ={
+server.get('/movies', (req, res) => {
+  const response = {
     success: true,
     movies,
-    
-  }
+  };
   console.log(req.query);
-  const genderFilterParam = response.movies.filter((movies)=>movies.gender === req.query.gender);
- /* const nameFilterParam = response.movies.sort((movies)=>movies.title === req.query.title);*/
+  const genderFilterParam = response.movies.filter(
+    (movies) => movies.gender === req.query.gender
+  );
+  /* const nameFilterParam = response.movies.sort((movies)=>movies.title === req.query.title);*/
   res.json(response);
-  res.json()
-})
+  res.json();
+});
 
+server.get('/movie/:movieId', (req, res) => {
+  console.log('Url param movieId:', req.params.movieId);
+});
