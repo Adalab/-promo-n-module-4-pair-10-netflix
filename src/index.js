@@ -29,7 +29,7 @@ server.set('view engine', 'ejs');
 
 //database
 
-const db = new Database("./src/db/database.db", {
+const db =new Database("./src/db/database.db", {
   verbose: console.log,
 });
 
@@ -43,19 +43,27 @@ server.get("/database", (req, res) => {
  
   const query = db.prepare("SELECT * FROM database order by name asc");
   const moviesFound = query.all();
-  res.json({ movies:moviesFound});
-  res.json();
+  res.json( moviesFound);
+  
 });
 
 server.post('/login', (req, res) => {
+  const email=req.body.userEmail;
+  const password=req.body.userPassword;
+ 
+  if(!email || !password){
+    res.sendStatus(404)
+  }
+  else{
+     const query = dbUser.prepare('SELECT * FROM users WHERE email = ? and password = ? ');
+  const userAll = query.get(email, password);
+  if(userAll !== undefined){
+    res.json({userId: userAll.id});
+  }else{
+    res.json({error: "Usuario no encontrado "});
+  }
+  }
   
-  const query = db.prepare('SELECT email = ?, password = ? FROM users');
-  const userAll = query.get(req.body.userEmail, req.body.userPass);
-  const response = {
-    success: true,
-    user: userAll,
-  };
-  console.log(userAll);
   res.json(response);
 });
 
