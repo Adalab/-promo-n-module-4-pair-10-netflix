@@ -43,20 +43,22 @@ server.get("/movies", (req, res) => {
   
 });
 
-server.post('/login', (req, res) => {
+server.post('/login-user', (req, res) => {
   const email=req.body.userEmail;
   const password=req.body.userPassword;
- 
-  if(!email || !password){
-    res.sendStatus(404)
+ console.log(req.body)
+
+  if(email === undefined || password== undefined){
+    //res.sendStatus(404);
+    res.json({success: false, errorMessage: "No existen los valores"});
   }
   else{
      const query = db.prepare('SELECT * FROM users WHERE email = ? and password = ? ');
   const userAll = query.get(email, password);
   if(userAll !== undefined){
-    res.json({userId: userAll.id});
+    res.json({success: true, userId: userAll.id});
   }else{
-    res.json({error: "Usuario no encontrado "});
+    res.json({success: false, errorMessage: "Usuario no encontrado "});
   }
   }
   
@@ -64,6 +66,7 @@ server.post('/login', (req, res) => {
 
 server.post("/sign-up", (req, res) => {
   let response = req.body;
+  console.log(req.body);
    if(req.body.userEmail ===''||req.body.userPassword ===''){
       response = { 
         success: true, 
