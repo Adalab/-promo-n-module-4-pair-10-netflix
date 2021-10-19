@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const movies = require("./data/movies.json");
 const Database = require("better-sqlite3");
 // create and config server
 const server = express();
@@ -29,21 +28,18 @@ server.set('view engine', 'ejs');
 
 //database
 
-const db =new Database("./src/db/database.db", {
+const db =new Database("./src/db/users.db", {
   verbose: console.log,
 });
 
-const dbUser =new Database("./src/db/users.db", {
-  verbose: console.log,
-});
+//llenar la bs movies
+
 
 //endpoints
-
-server.get("/database", (req, res) => {
- 
-  const query = db.prepare("SELECT * FROM database order by name asc");
+server.get("/movies", (req, res) => {
+  const query = db.prepare("SELECT * FROM movies order by name asc");
   const moviesFound = query.all();
-  res.json( moviesFound);
+  res.json( {movies: moviesFound});
   
 });
 
@@ -55,7 +51,7 @@ server.post('/login', (req, res) => {
     res.sendStatus(404)
   }
   else{
-     const query = dbUser.prepare('SELECT * FROM users WHERE email = ? and password = ? ');
+     const query = db.prepare('SELECT * FROM users WHERE email = ? and password = ? ');
   const userAll = query.get(email, password);
   if(userAll !== undefined){
     res.json({userId: userAll.id});
@@ -64,7 +60,6 @@ server.post('/login', (req, res) => {
   }
   }
   
-  res.json(response);
 });
 
 server.post("/sign-up", (req, res) => {
