@@ -37,7 +37,7 @@ const db =new Database("./src/db/users.db", {
 
 //endpoints
 server.get("/movies", (req, res) => {
-  const query = db.prepare("SELECT * FROM movies order by name asc");
+  const query = db.prepare("SELECT * FROM movies order by title asc");
   const moviesFound = query.all();
   res.json( {movies: moviesFound});
   
@@ -64,13 +64,11 @@ server.post('/login-user', (req, res) => {
   
 });
 
-server.post("/sign-up", (req, res) => {
+{/*server.post("/sign-up", (req, res) => {
   let response = req.body;
   console.log(req.body);
    if(req.body.userEmail ===''||req.body.userPassword ===''){
-      response = { 
-        success: true, 
-        error: "debes rellenar todos los campos"}
+    res.json({success: false, errorMessage: "Debes rellenar los campos"});
    }else{
      const query = db.prepare('INSERT INTO users (email,password) VALUES (?,?)')
      const result = query.run(req.body.userEmail,req.body.userPassword);
@@ -79,4 +77,31 @@ server.post("/sign-up", (req, res) => {
        userId: result.lastInsertRowId}
    }
    res.json(response);
- });
+ });*/}
+
+ 
+ server.post('/signup', (req, res) => {
+  const email=req.body.userEmail;
+  const password=req.body.userPassword;
+
+  if ( email === "" ||  password === "") {
+    //si los datos no son correctos devuelvo un error
+    res.json({ success: false, errorMessage: "Rellena todos los campos" });
+  } else{
+  const querySignUp = db.prepare('SELECT * FROM main.users WHERE email=? and password=?')
+  const userFound= querySignUp.get(email, password);
+    if (userFound === undefined){
+    const query = db.prepare('INSERT INTO users(email, password) values (?,?)')
+      
+    const userNew= query.run(req.body.email, req.body.password);
+    res.json({success: true, userId: userNew.lastInsertRowid});
+   
+    } else{
+      res.json({success: false, errorMessage: "Usuario ya registrado "});
+  }
+  
+}  
+      
+    
+
+});

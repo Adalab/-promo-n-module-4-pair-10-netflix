@@ -21,7 +21,7 @@ const sendLoginToApi = (data) => {
 const sendSingUpToApi = (data) => {
   const bodyParams = { userEmail: data.email, userPassword: data.password };
   console.log(bodyParams);
-  return fetch("http://localhost:4000/sign-up", {
+  return fetch("http://localhost:4000/signup", {
     method: "POST",
     body: JSON.stringify(bodyParams),
     headers: {
@@ -29,6 +29,7 @@ const sendSingUpToApi = (data) => {
     },
   })
     .then((response) => response.json())
+
     .then((data) => {
       return data; 
     });
@@ -89,6 +90,7 @@ const getUserMoviesFromApi = (userId) => {
         ],
       };
     });
+    
 };
 
 const objToExport = {

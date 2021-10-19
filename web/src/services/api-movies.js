@@ -1,10 +1,10 @@
 // login
 
-const getMoviesFromApi = (movies) => {
+const getMoviesFromApi = (params) => {
   console.log('Se están pidiendo las películas de la app');
   console.log(getMoviesFromApi);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch(`http://localhost:4000/movies`,{
+  return fetch(`http://localhost:4000/movies?gender=${params.gender}`,{
     method:"GET", 
     headers: {
       'Content-Type': 'application/json',
